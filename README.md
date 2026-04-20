@@ -12,4 +12,4 @@
 
 
 
-![会前提醒海报.png](https://raw.gitcode.com/user-images/assets/9726187/cfdf5cac-9799-46f6-b293-55a622ece268/会前提醒海报.png '会前提醒海报.png')
+![会前提醒海报.jpg](https://raw.gitcode.com/user-images/assets/9726187/8aaca046-f1e7-4599-92e8-a473c0af676b/会前提醒海报.jpg '会前提醒海报.jpg')
