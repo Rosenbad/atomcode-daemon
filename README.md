@@ -24,9 +24,9 @@ time:
 即日起，【AtomCode 开发者共创月】在 AtomGit 平台正式发车！无论你是找 Bug 达人，还是追求极致代码的架构大佬，三大核心路线任你选择。参与开源打榜升级，不仅能深度参与早期产品的共建与演进，还有满级硬核大礼等你来拿！👇
 
 * **📅 活动时间：** 4月18日 - 5月20日
-* **📍 提交阵地：** AtomCode 官方代码仓库 (Issue / PR / 讨论区)
+* **📍 提交阵地：****<span style="color:#e60000;"> AtomCode 代码仓库 (Issue / PR / 讨论区)</span>**
 
-**项目地址：**[https://gitcode.com/atomgit_atomcode/atomcode?source_module=home_hot_selection]
+**AtomCode项目地址：**[https://gitcode.com/atomgit_atomcode/atomcode?source_module=home_hot_selection]
 
 **项目网站：**[https://atomcode.atomgit.com/]
 
