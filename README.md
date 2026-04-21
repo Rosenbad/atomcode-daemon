@@ -26,7 +26,7 @@ time:
 * **📅 活动时间：** 4月18日 - 5月20日
 * **📍 提交阵地：** AtomCode 官方代码仓库 (Issue / PR / 讨论区)
 
-**项目地址：**[https://gitcode.com/atomgit_atomcode/atomcode](url)
+**项目地址：**[https://gitcode.com/atomgit_atomcode/atomcode?source_module=home_hot_selection](url)
 
 **项目网站：**[https://atomcode.atomgit.com/](url)
 
