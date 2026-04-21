@@ -69,6 +69,6 @@ time:
 ---
 
 **🔥 下一代 AI Coding 的未来，由你定义！**
-立刻前往 AtomCode 代码仓，留下你的极客印记吧！👉 [https://gitcode.com/atomgit_atomcode/atomcode]
+
 
 ![会前提醒海报.jpg](https://raw.gitcode.com/user-images/assets/9726187/30a8d7b1-908b-4c80-b69f-c7d9d08297a6/会前提醒海报.jpg '会前提醒海报.jpg')
