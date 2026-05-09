@@ -70,7 +70,7 @@ time:
 
 **🔥 下一代 AI Coding 的未来，由你定义！**
 
-![image.png](https://raw.gitcode.com/user-images/assets/9726187/b5db8750-1ad6-4b60-90fe-4204f357df44/image.png 'image.png')
+![微信图片_20260509180137_690_52.jpg](https://raw.gitcode.com/user-images/assets/9726187/78a63813-2a2c-46b9-8804-de886a94049b/微信图片_20260509180137_690_52.jpg '微信图片_20260509180137_690_52.jpg')
 
 
 ![会前提醒海报.jpg](https://raw.gitcode.com/user-images/assets/9726187/30a8d7b1-908b-4c80-b69f-c7d9d08297a6/会前提醒海报.jpg '会前提醒海报.jpg')
