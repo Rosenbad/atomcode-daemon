@@ -1,0 +1,15 @@
+{
+  "name": "atomcode-daemon",
+  "version": "0.2.0",
+  "description": "AtomCode Daemon - HTTP + SSE API service for AtomCode AI agent with file tools",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "multer": "^2.1.1",
+    "uuid": "^1
