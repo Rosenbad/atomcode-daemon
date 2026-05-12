@@ -2,36 +2,45 @@
 
 HTTP + SSE API service for AtomCode AI agent with file operation tools.
 
-## Features
+## Prerequisites
 
-- **HTTP API** with SSE streaming chat
-- **Web UI** for browser-based interaction
-- **File Operations** - read, write, edit, list, search files
-- **Shell Execution** - execute commands safely
-- **Authentication** - optional token-based auth
-- **Multi-Provider** - support for OpenAI, Claude, Ollama, etc.
-- **Image Analysis** - vision API support
-- **Session Management** - persistent conversation history
+- **Node.js** >= 18.0.0
+- **AtomCode CLI** — installed and logged in (`atomcode login`)
+- **config.toml** — auto-generated at `~/.atomcode/config.toml` after first login
 
 ## Quick Start
 
 ```bash
-# Install dependencies
+# 1. Clone the repository
+git clone https://github.com/Rosenbad/atomcode-daemon.git
+cd atomcode-daemon
+
+# 2. Install dependencies
 npm install
 
-# Start the server
+# 3. Start the server
 npm start
-
-# Or start in development mode with auto-reload
-npm run dev
-
-# Run tests
-npm test
 ```
+
+You'll see:
+```
+  🌐  http://127.0.0.1:18788
+  🔧  CLI available: true
+```
+
+Open `http://127.0.0.1:18788` in your browser to use the web UI.
+
+## How It Works
+
+1. The daemon reads your AtomCode configuration from `~/.atomcode/config.toml` automatically.
+2. It spawns the `atomcode` CLI in headless mode (`atomcode -p "..."`) for AI responses.
+3. All providers defined in your config.toml appear in the UI dropdown.
+4. The CLI has built-in file tools — no separate tool server is needed.
+5. Sessions and messages are stored locally in `data/store.json`.
 
 ## Configuration
 
-Create `~/.atomcode/config.toml`:
+Create or edit `~/.atomcode/config.toml`:
 
 ```toml
 default_provider = "openai"
@@ -47,40 +56,49 @@ host = "127.0.0.1"
 port = 18788
 ```
 
+The daemon hot-reloads config.toml when it changes — no restart needed.
+
+## Features
+
+- **HTTP API** with SSE streaming chat
+- **Web UI** for browser-based interaction
+- **CLI Mode** — uses atomcode CLI headless mode with built-in file tools
+- **API Mode** — direct OpenAI-compatible API calls for Vision models
+- **Image Analysis** — vision API support
+- **Session Management** — persistent conversation history (local)
+- **Authentication** — optional token-based auth
+- **Directory Switching** — change working directory from UI or `/cd` endpoint
+
 ## API Endpoints
 
 ### Chat
-- `POST /chat` - SSE streaming chat
-- `POST /chat/stop` - Stop ongoing chat
+- `POST /chat` — SSE streaming chat
+- `POST /chat/stop` — Stop ongoing chat
 
 ### Sessions
-- `GET /sessions` - List sessions
-- `POST /sessions` - Create new session
-- `GET /sessions/search?q=query` - Search sessions
+- `GET /sessions` — List sessions
+- `POST /sessions` — Create new session
+- `GET /sessions/search?q=query` — Search sessions
 
 ### Tools
-- `GET /tools` - List available tools
-- `GET /tools/file/read?path=...` - Read file
-- `POST /tools/file/write` - Write file
-- `POST /tools/file/edit` - Search and replace
-- `GET /tools/dir/list` - List directory
-- `POST /tools/bash` - Execute command
-- `GET /tools/grep?pattern=...` - Search in files
-- `GET /tools/glob?pattern=...` - Find files
-
-### Authentication
-- `GET /auth/status` - Check auth status
-- `POST /auth/token` - Generate token (admin)
-- `DELETE /auth/token/:token` - Revoke token (admin)
+- `GET /tools` — List available tools
+- `GET /tools/file/read?path=...` — Read file
+- `POST /tools/file/write` — Write file
+- `POST /tools/file/edit` — Search and replace
+- `GET /tools/dir/list` — List directory
+- `POST /tools/bash` — Execute command
+- `GET /tools/grep?pattern=...` — Search in files
+- `GET /tools/glob?pattern=...` — Find files
 
 ### System
-- `GET /health` - Health check
-- `GET /models` - List available models
-- `POST /config/reload` - Reload configuration
+- `GET /health` — Health check
+- `GET /models` — List available models
+- `POST /config/reload` — Reload configuration
+- `POST /cd` — Change working directory
 
 ## Authentication
 
-Enable authentication by setting environment variable:
+Enable authentication by setting environment variables:
 
 ```bash
 ATOMCODE_AUTH_ENABLED=true
@@ -93,30 +111,13 @@ Then use the token in requests:
 curl -H "Authorization: Bearer <token>" http://localhost:18788/tools/file/read?path=README.md
 ```
 
-## File Operations
+## Important Notes
 
-The daemon provides safe file operations with:
-- Path validation (no escaping workspace)
-- Sensitive path detection
-- Destructive command confirmation
-- Recursive operations support
-
-Example:
-
-```bash
-# Read file
-curl http://localhost:18788/tools/file/read?path=src/index.js
-
-# Write file
-curl -X POST http://localhost:18788/tools/file/write \
-  -H "Content-Type: application/json" \
-  -d '{"path": "test.txt", "content": "Hello World"}'
-
-# Execute command
-curl -X POST http://localhost:18788/tools/bash \
-  -H "Content-Type: application/json" \
-  -d '{"command": "ls -la"}'
-```
+- The daemon must be running while you use the web UI.
+- The `data/` directory stores session history. Deleting it resets all conversations.
+- The daemon binds to `127.0.0.1` by default — not accessible from other machines.
+- If `CLI available: false`, make sure `atomcode` is in your PATH or installed at `D:\AtomCode\`.
+- Windows users: the daemon searches common AtomCode install paths automatically.
 
 ## Project Structure
 
@@ -124,21 +125,20 @@ curl -X POST http://localhost:18788/tools/bash \
 atomcode-daemon/
 ├── src/
 │   ├── index.js          # Main server
-│   ├── config.js         # Configuration management
-│   ├── auth.js           # Authentication
-│   ├── store.js          # Session storage
-│   ├── engine.js         # AI engine
-│   ├── tools.js          # File/shell tools
-│   ├── toml-parser.js    # TOML parser
-│   ├── logger.js         # Logging
+│   ├── config.js         # Configuration management + hot reload
+│   ├── auth.js           # Token authentication
+│   ├── store.js          # Session storage (local JSON)
+│   ├── engine.js         # AI engine (CLI + API modes)
+│   ├── tools.js          # 10 file/shell operations
+│   ├── toml-parser.js    # TOML config parser
+│   ├── logger.js         # Structured logging
 │   └── web-ui.js         # Static file serving
 ├── public/
 │   └── index.html        # Web UI
-├── tests/
-│   ├── toml-parser.test.js
-│   └── tools.test.js
+├── data/
+│   └── store.json        # Session data (generated at runtime)
+├── .gitignore
 ├── package.json
-├── vitest.config.js
 └── README.md
 ```
 
@@ -150,44 +150,6 @@ atomcode-daemon/
 | `ATOMCODE_ADMIN_KEY` | Admin key for token management | - |
 | `ATOMCODE_CORS_ORIGIN` | CORS origin | `*` |
 | `LOG_LEVEL` | Log level (DEBUG, INFO, WARN, ERROR) | `INFO` |
-| `LOG_FILE` | Log file path | `~/.atomcode/daemon.log` |
-
-## Improvements Made
-
-1. **Project Cleanup**
-   - Added `.gitignore`
-   - Removed debug scripts and logs
-
-2. **Authentication**
-   - Token-based auth system
-   - Admin endpoints for token management
-   - CORS configuration
-
-3. **TOML Parser**
-   - Robust TOML parser with error reporting
-   - Support for all AtomCode config formats
-   - Better error messages
-
-4. **File Tools**
-   - 10 file/shell operations
-   - Path safety validation
-   - Sensitive path detection
-   - Destructive command protection
-
-5. **Config Management**
-   - Hot reload support
-   - Better provider parsing
-   - Path-based config access
-
-6. **Testing**
-   - Vitest test framework
-   - TOML parser tests
-   - File tools tests
-
-7. **Logging**
-   - Structured logging
-   - Multiple log levels
-   - File and console output
 
 ## License
 
